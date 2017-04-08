@@ -7,7 +7,6 @@ A bipartite graph is one that can be partitioned into 2 sets of vertices where *
 A helpful abstraction is to imagine coloring the vertices 1 of 2 colors so that **every edge has end-nodes of different colors**  
 
 ### This is the 1st graph tested in the code
-
 <img src="images/bipartite-graph-example.png" width="300">
 
 An important property of Bipartite graphs is they **contain NO odd-length cycle**  
@@ -17,7 +16,6 @@ An important property of Bipartite graphs is they **contain NO odd-length cycle*
 **A Non-Bipartite Graph (odd length cycle CANNOT be colored & still maintain edges with different colored end-nodes)**
 
 ### This is the 2nd graph that the code tests
-
 <img src="images/graph-odd-cycle.png" width="300">  
 
 ## Algorithm
