@@ -3,6 +3,8 @@ import java.util.*;
 public class Bipartite {
 
 	public static void main(String[] args) {
+		Bipartite bipartiteTester = new Bipartite();
+
 		//structure to hold adjacency list. Indexes from 1 (ignoring 0)
 		ArrayList<LinkedList<Integer>> graphAdjacencyList = new ArrayList<LinkedList<Integer>>();
 		graphAdjacencyList.add( new LinkedList<Integer>() );		//ignore 0th index to make future access more understandable
@@ -14,10 +16,18 @@ public class Bipartite {
 		graphAdjacencyList.add( new LinkedList<Integer>( Arrays.asList(1, 2, 3, 4) ) );
 		graphAdjacencyList.add( new LinkedList<Integer>( Arrays.asList(1, 4) ) );
 
-		Bipartite bipartiteTester = new Bipartite();
-
 		int startingNode = 1;		//starting node is arbitrary, can be any vertex in the graph
-		System.out.println("Is the graph bipartite? "+ bipartiteTester.isBipartite(graphAdjacencyList, startingNode));
+		System.out.println("1st graph\n");
+		System.out.println("\nIs the graph bipartite? "+ bipartiteTester.isBipartite(graphAdjacencyList, startingNode));
+
+		ArrayList<LinkedList<Integer>> graphAdjacencyList2 = new ArrayList<LinkedList<Integer>>();
+		graphAdjacencyList2.add( new LinkedList<Integer>() );		//ignore 0th index to make future access more understandable
+		graphAdjacencyList2.add( new LinkedList<Integer>( Arrays.asList(2, 3) ) );
+		graphAdjacencyList2.add( new LinkedList<Integer>( Arrays.asList(1, 3) ) );
+		graphAdjacencyList2.add( new LinkedList<Integer>( Arrays.asList(1, 2) ) );
+
+		System.out.println("\n-------------------------------------------------------- \n2nd graph\n");
+		System.out.println("\nIs the graph bipartite? "+ bipartiteTester.isBipartite(graphAdjacencyList2, startingNode));
 	}
 
 	public boolean isBipartite(ArrayList<LinkedList<Integer>> graph, int startingNode){
@@ -53,16 +63,17 @@ public class Bipartite {
 		System.out.println("Breadth first search Layers");
 		printBfsLayers(layers);
 
-		boolean bipartite = true;
+		boolean bipartite = true;		//assume it's bipartite, check if it's not
+		System.out.println("\nAll edges with colors");
 		for(int u=1; u<graph.size(); u++){		//start from 1 NOT 0
-			System.out.print(u+": ");
 			for(int v : graph.get(u)){
-				System.out.println("u="+u+"color[u]="+color[u]+" ==? "+"v="+v+"color[v]="+color[v]);
+				System.out.print(u+"-->"+v+"  ("+color[u]+"-->"+color[v]+")");
 				if(color[u].equals(color[v])){
 					bipartite=false;
+					System.out.print("  vertex colors match, cannot be bipartite");
 				}
+				System.out.println();
 			}
-			System.out.println();
 		}
 
 		return bipartite;
