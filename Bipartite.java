@@ -9,20 +9,22 @@ public class Bipartite {
 		graphAdjacencyList.add( new LinkedList<Integer>( Arrays.asList(5, 6, 7) ) );
 		graphAdjacencyList.add( new LinkedList<Integer>( Arrays.asList(5, 6) ) );
 		graphAdjacencyList.add( new LinkedList<Integer>( Arrays.asList(5, 6, 7) ) );
-		graphAdjacencyList.add( new LinkedList<Integer>( Arrays.asList(4, 6) ) );
+		graphAdjacencyList.add( new LinkedList<Integer>( Arrays.asList(6, 7) ) );
 		graphAdjacencyList.add( new LinkedList<Integer>( Arrays.asList(1, 2, 3) ) );
 		graphAdjacencyList.add( new LinkedList<Integer>( Arrays.asList(1, 2, 3, 4) ) );
-		graphAdjacencyList.add( new LinkedList<Integer>( Arrays.asList(1, 7) ) );
+		graphAdjacencyList.add( new LinkedList<Integer>( Arrays.asList(1, 4) ) );
 
 		Bipartite bipartiteTester = new Bipartite();
 
-		int startingNode = 1;
+		int startingNode = 1;		//starting node is arbitrary, can be any vertex in the graph
 		System.out.println("Is the graph bipartite? "+ bipartiteTester.isBipartite(graphAdjacencyList, startingNode));
 	}
 
 	public boolean isBipartite(ArrayList<LinkedList<Integer>> graph, int startingNode){
 		//Array saying if a node has been visited. (INDEXED FROM 1, IGNORING 0). All future accesses must use an offset of +1 for "normal" arrays
-		boolean[] visitedNodes = new boolean[ graph.size() +1];		
+		boolean[] visitedNodes = new boolean[ graph.size() +1];
+		String[] color = new String[ graph.size() +1];	//boolean array. Red=true, Blue=false
+		color[startingNode]="Red";
 
 		int layerCounter = 0;		//how many layers we find. Used to name the layers. Starts @ 0, but there is actually 1 more layer than this number since L0 counts as the 1st.
 		ArrayList<ArrayList<Integer>> layers = new ArrayList<ArrayList<Integer>>();
@@ -38,6 +40,11 @@ public class Bipartite {
 					if(!visitedNodes[v]){
 						visitedNodes[v]=true;		//If not visited, visit
 						layers.get(layerCounter+1).add(v);	// add to the NEXT layer
+						if((layerCounter+1)%2==0){	//Check next layer, Even layers get Red
+							color[v]="Red";
+						}else{			//odd layers get Blue
+							color[v]="Blue";
+						}
 					}
 				}
 			}
@@ -46,7 +53,19 @@ public class Bipartite {
 		System.out.println("Breadth first search Layers");
 		printBfsLayers(layers);
 
-		return false;
+		boolean bipartite = true;
+		for(int u=1; u<graph.size(); u++){		//start from 1 NOT 0
+			System.out.print(u+": ");
+			for(int v : graph.get(u)){
+				System.out.println("u="+u+"color[u]="+color[u]+" ==? "+"v="+v+"color[v]="+color[v]);
+				if(color[u].equals(color[v])){
+					bipartite=false;
+				}
+			}
+			System.out.println();
+		}
+
+		return bipartite;
 	}
 
 	private void printBfsLayers(ArrayList<ArrayList<Integer>> layers){
